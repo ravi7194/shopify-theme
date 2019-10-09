@@ -1,0 +1,120 @@
+{% if settings.show_multiple_currencies %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> 
+<script>
+  var Currency = {
+    rates: {"USD":2.0,
+            "EUR":1.10456,
+            "GBP":1.25237,
+            "CAD":0.754289,
+            "ARS":0.0177051,
+            "AUD":0.67937,
+            "BRL":0.23991,
+            "CLP":0.00139625,
+            "CNY":0.140913,
+            "CYP":0.397899,
+            "CZK":0.0426449,
+            "DKK":0.147915,
+            "EEK":0.0706676,
+            "HKD":0.1277,
+            "HUF":0.00332275,
+            "ISK":0.00806261,
+            "INR":0.0140068,
+            "JMD":0.00734743,
+            "JPY":0.00925584,
+            "LVL":1.57329,
+            "LTL":0.320236,
+            "MTL":0.293496,
+            "MXN":0.0514285,
+            "NZD":0.629663,
+            "NOK":0.111419,
+            "PLN":0.254461,
+            "SGD":0.725311,
+            "SKK":21.5517,
+            "SIT":175.439,
+            "ZAR":0.0674983,
+            "KRW":0.000837354,
+            "SEK":0.103217,
+            "CHF":1.00724,
+            "TWD":0.0322585,
+            "UYU":0.0272033,
+            "MYR":0.238655,"BSD":1.0,"CRC":0.00173276,"RON":0.232772,"PHP":0.0191183,"AED":0.272294,"VEB":0.000100125,"IDR":7.11054e-05,"TRY":0.174846,"THB":0.0327498,"TTD":0.147734,"ILS":0.284491,"SYP":0.00194172,"XCD":0.370032,"COP":0.000295498,"RUB":0.0156206,"HRK":0.149234,"KZT":0.00258407,"TZS":0.000435192,"XPT":939.549,"SAR":0.266667,"NIO":0.0298109,"LAK":0.000113738,"OMR":2.60078,"AMD":0.00209937,"CDF":0.000601691,"KPW":0.0011111,"SPL":6.0,"KES":0.00962703,"ZWD":0.00276319,"KHR":0.000243922,"MVR":0.0648969,"GTQ":0.129884,"BZD":0.496459,"BYR":4.88598e-05,"LYD":0.708818,"DZD":0.00831387,"BIF":0.000539936,"GIP":1.25237,"BOB":0.144777,"XOF":0.00168388,"STD":4.50369e-05,"NGN":0.00277788,"PGK":0.294003,"ERN":0.0666667,"MWK":0.00137964,"CUP":0.0377358,"GMD":0.01984,"CVE":0.0100168,"BTN":0.0140068,"XAF":0.00168388,"UGX":0.000272073,"MAD":0.103307,"MNT":0.000374898,"LSL":0.0674983,"XAG":17.8032,"TOP":0.430339,"SHP":1.25237,"RSD":0.00940186,"HTG":0.0104913,"MGA":0.000267421,"MZN":0.0162349,"FKP":1.25237,"BWP":0.0920978,"HNL":0.0406637,"PYG":0.000157806,"JEP":1.25237,"EGP":0.0613185,"LBP":0.00066335,"ANG":0.55872,"WST":0.37167,"TVD":0.67937,"GYD":0.00478365,"GGP":1.25237,"NPR":0.00871343,"KMF":0.00224518,"IRR":2.36915e-05,"XPD":1622.32,"SRD":0.134099,"TMM":5.71428e-05,"SZL":0.0674983,"MOP":0.123981,"BMD":1.0,"XPF":0.00925617,"ETB":0.0340374,"JOD":1.41044,"MDL":0.0565775,"MRO":0.00270946,"YER":0.00399612,"BAM":0.56475,"AWG":0.558659,"PEN":0.298106,"VEF":0.100125,"SLL":0.000106307,"KYD":1.21951,"AOA":0.00272194,"TND":0.349346,"TJS":0.103254,"SCR":0.0731787,"LKR":0.00552607,"DJF":0.00562473,"GNF":0.000108474,"VUV":0.00851655,"SDG":0.0221397,"IMP":1.25237,"GEL":0.336709,"FJD":0.457324,"DOP":0.0194462,"XDR":1.37071,"MUR":0.0275775,"MMK":0.000652881,"LRD":0.00479913,"BBD":0.5,"ZMK":7.56559e-05,"XAU":1499.8,"VND":4.30914e-05,"UAH":0.040561,"TMT":0.285714,"IQD":0.00083897,"BGN":0.56475,"KGS":0.0143172,"RWF":0.0010853,"BHD":2.65957,"UZS":0.000106435,"PKR":0.00638326,"MKD":0.0179668,"AFN":0.0127573,"NAD":0.0674983,"BDT":0.0118384,"AZN":0.589451,"SOS":0.00173574,"QAR":0.274725,"PAB":1.0,"CUC":1.0,"SVC":0.114286,"SBD":0.124801,"ALL":0.00911748,"BND":0.725311,"KWD":3.29023,"GHS":0.181779,"ZMW":0.0756559,"XBT":10147.4,"NTD":0.0337206,"BYN":0.488598,"CNH":0.14085,"MRU":0.0270946,"STN":0.0450369,"VES":5.04683e-05,"MXV":0.326808},
+    convert: function(amount, from, to) {
+      console.log(amount+'amount');
+      console.log(from+'from');
+      console.log(to + 'to');
+      return (amount * this.rates[from]) / this.rates[to];
+    }
+  };
+</script>
+{{ "jquery.currencies.min.js" | asset_url | script_tag }}
+
+<script>
+
+Currency.format = '{{ settings.currency_format | default: 'money_with_currency_format' }}';
+
+var shopCurrency = '{{ shop.currency }}';
+
+/* Sometimes merchants change their shop currency, let's tell our JavaScript file */
+Currency.moneyFormats[shopCurrency].money_with_currency_format = {{ shop.money_with_currency_format | strip_html | json }};
+Currency.moneyFormats[shopCurrency].money_format = {{ shop.money_format | strip_html | json }};
+  
+/* Default currency */
+var defaultCurrency = '{{ settings.default_currency | default: shop.currency }}';
+  
+/* Cookie currency */
+var cookieCurrency = Currency.cookie.read();
+
+/* Fix for customer account pages */
+jQuery('span.money span.money').each(function() {
+  jQuery(this).parents('span.money').removeClass('money');
+});
+
+/* Saving the current price */
+jQuery('span.money').each(function() {
+  jQuery(this).attr('data-currency-{{ shop.currency }}', jQuery(this).html());
+});
+
+// If there's no cookie.
+if (cookieCurrency == null) {
+  if (shopCurrency !== defaultCurrency) {
+    Currency.convertAll(shopCurrency, defaultCurrency);
+  }
+  else {
+    Currency.currentCurrency = defaultCurrency;
+  }
+}
+// If the cookie value does not correspond to any value in the currency dropdown.
+else if (jQuery('[name=currencies]').size() && jQuery('[name=currencies] option[value=' + cookieCurrency + ']').size() === 0) {
+  Currency.currentCurrency = shopCurrency;
+  Currency.cookie.write(shopCurrency);
+}
+else if (cookieCurrency === shopCurrency) {
+  Currency.currentCurrency = shopCurrency;
+}
+else {
+  Currency.convertAll(shopCurrency, cookieCurrency);
+}
+
+jQuery('[name=currencies]').val(Currency.currentCurrency).change(function() {
+  var newCurrency = jQuery(this).val();
+  Currency.convertAll(Currency.currentCurrency, newCurrency);
+  jQuery('.selected-currency').text(Currency.currentCurrency);
+});
+
+var original_selectCallback = window.selectCallback;
+var selectCallback = function(variant, selector) {
+  original_selectCallback(variant, selector);
+  Currency.convertAll(shopCurrency, jQuery('[name=currencies]').val());
+  jQuery('.selected-currency').text(Currency.currentCurrency);
+};
+
+$('body').on('ajaxCart.afterCartLoad', function(cart) {
+  Currency.convertAll(shopCurrency, jQuery('[name=currencies]').val());
+  jQuery('.selected-currency').text(Currency.currentCurrency);  
+});
+
+jQuery('.selected-currency').text(Currency.currentCurrency);
+
+</script>
+
+{% endif %}
